@@ -1,0 +1,17 @@
+<pre
+  >{{ form.value | json }}
+    </pre
+>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h2>Model Login Form</h2>
+
+  <div class="basic">
+    <input formControlName="email" class="ml-2" placeholder="Email" />
+    <input formControlName="password" placeholder="Password" type="password" />
+  </div>
+
+  <button [disabled]="form.invalid" md-button color="primary" type="submit">
+    SUBMIT
+  </button>
+</form>

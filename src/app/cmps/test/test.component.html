@@ -1,0 +1,25 @@
+<!-- <h1 [title]="10 * 10 * 10">{{ title }}</h1> -->
+<h1 title="{{ 10 * 10 * 10 }}">{{ title }}</h1>
+<section>
+  <p [class.admin]="user.isAdmin">{{ user | json }}</p>
+  <button (click)="onToggleAdmin($event)">Toggle Admin</button>
+</section>
+
+<signup></signup>
+
+<greet [user]="user" (hello)="onSayHello($event)"></greet>
+
+<section *ngIf="user.isAdmin">
+  <h1>top secret</h1>
+  <p>
+    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil, harum
+    impedit quos recusandae quibusdam voluptas.
+  </p>
+</section>
+
+<button (click)="onAddPet()">Add Pet</button>
+<ul>
+  <li *ngFor="let pet of pets; trackBy: trackByFn; index as idx">
+    {{ idx }}-{{ pet.name }}
+  </li>
+</ul>

@@ -1,0 +1,10 @@
+<h1 *ngIf="user">welcome {{ user?.fullname }}</h1>
+<div *ngIf="data.length">
+  <ul *ngFor="let innerArray of data">
+    <li *ngFor="let item of innerArray">
+      {{ item | json }}
+      <!-- This will display each item in the inner array. -->
+    </li>
+  </ul>
+</div>
+<div *ngIf="!data.length">No data available.</div>

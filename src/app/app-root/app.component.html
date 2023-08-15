@@ -1,0 +1,15 @@
+<section class="main-app">
+  <div class="nav">
+    <p>hello {{ user?.fullname }}</p>
+    <li><a href="/signup">signup</a></li>
+    <li><a href="/login">login</a></li>
+    <li><a href="/secret">secret</a></li>
+    <button (click)="logout()">logout</button>
+  </div>
+
+  <div class="component-container">
+    <!-- <signup></signup> -->
+    <!-- <login></login> -->
+    <router-outlet> </router-outlet>
+  </div>
+</section>
