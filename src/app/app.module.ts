@@ -11,11 +11,17 @@ import { TestComponent } from './cmps/test/test.component';
 import { LoginComponent } from './views/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminPanelComponent } from './views/admin-panel/admin-panel.component';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { RestaurantEditComponent } from './views/edit/edit.component';
+import { LoaderComponent } from './cmps/loader/loader.component';
 
 const appRoute: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'secret', component: AdminPanelComponent },
+  { path: 'edit/:id', component: RestaurantEditComponent },
 ];
 
 @NgModule({
@@ -26,6 +32,8 @@ const appRoute: Routes = [
     TestComponent,
     LoginComponent,
     AdminPanelComponent,
+    RestaurantEditComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +42,10 @@ const appRoute: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoute),
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatButtonModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

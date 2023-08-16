@@ -1,0 +1,22 @@
+<section class="diamond-edit">
+  <h2>{{ "Add" }} restaurant</h2>
+  <form [formGroup]="form" (ngSubmit)="onSaveRestaurant()">
+    <label for="name">Name</label>
+    <input type="text" formControlName="name" id="name" />
+    <ng-container *ngIf="form.controls['name'] as nameInput">
+      <p class="errors" *ngIf="nameInput.touched && nameInput.invalid">
+        <span *ngIf="nameInput.errors?.['required']">name is required!</span>
+        <span *ngIf="nameInput.errors?.['startWithNumber']"
+          >Cant start name with number!</span
+        >
+      </p>
+    </ng-container>
+    <label for="Stars">Stars</label>
+    <input type="number" formControlName="stars" id="stars" />
+
+    <label for="collection">Collection</label>
+    <input type="text" formControlName="collection" id="collection" />
+
+    <button>Save</button>
+  </form>
+</section>

@@ -1,0 +1,18 @@
+/* styles.scss or app.component.scss */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+table {
+  width: 100%;
+  min-width: 500px; // Adjust this value based on your needs
+}
+
+th.mat-header-cell,
+td.mat-cell {
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
