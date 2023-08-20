@@ -1,9 +1,15 @@
-<button (click)="getAllData()">all data</button>
-<button (click)="handleData('chef')">Chefs</button>
-<button (click)="handleData('restaurant')">Restaurants</button>
-<button (click)="handleData('dish')">Dishes</button>
-
-<table mat-table [dataSource]="entityData" class="mat-elevation-z8">
+<nav class="panel-header">
+  <button (click)="getAllData()">all data</button>
+  <button (click)="handleData('chef')">Chefs</button>
+  <button (click)="handleData('restaurant')">Restaurants</button>
+  <button (click)="handleData('dish')">Dishes</button>
+</nav>
+<table
+  mat-table
+  [dataSource]="entityData"
+  class="mat-elevation-z8"
+  *ngIf="entityData.length"
+>
   <!-- Position Column -->
   <ng-container matColumnDef="_id">
     <th mat-header-cell *matHeaderCellDef>No.</th>
@@ -35,4 +41,24 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<table
+  mat-table
+  [dataSource]="tableData"
+  class="mat-elevation-z8"
+  *ngIf="!entityData.length"
+>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="count">
+    <th mat-header-cell *matHeaderCellDef>Count</th>
+    <td mat-cell *matCellDef="let element">{{ element.count }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="summaryColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: summaryColumns"></tr>
 </table>

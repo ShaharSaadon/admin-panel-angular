@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { RestaurantEditComponent } from './views/edit/edit.component';
 import { LoaderComponent } from './cmps/loader/loader.component';
+import { AppHeaderComponent } from './cmps/app-header/app-header.component';
 
 const appRoute: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -34,6 +35,7 @@ const appRoute: Routes = [
     AdminPanelComponent,
     RestaurantEditComponent,
     LoaderComponent,
+    AppHeaderComponent,
   ],
   imports: [
     BrowserModule,

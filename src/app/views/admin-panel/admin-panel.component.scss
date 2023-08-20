@@ -16,3 +16,16 @@ td.mat-cell {
   width: 100%;
   overflow-x: auto;
 }
+
+.panel-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 12px 0;
+
+  button {
+    padding: 8px 4px;
+    background-color: #0e6dfd;
+    color: white;
+  }
+}

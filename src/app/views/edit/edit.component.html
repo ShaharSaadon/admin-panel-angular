@@ -1,8 +1,10 @@
-<section class="diamond-edit">
+<section class="restaurant-edit">
   <h2>{{ "Add" }} restaurant</h2>
   <form [formGroup]="form" (ngSubmit)="onSaveRestaurant()">
-    <label for="name">Name</label>
-    <input type="text" formControlName="name" id="name" />
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" formControlName="name" id="name" />
+    </div>
     <ng-container *ngIf="form.controls['name'] as nameInput">
       <p class="errors" *ngIf="nameInput.touched && nameInput.invalid">
         <span *ngIf="nameInput.errors?.['required']">name is required!</span>
@@ -11,11 +13,49 @@
         >
       </p>
     </ng-container>
-    <label for="Stars">Stars</label>
-    <input type="number" formControlName="stars" id="stars" />
+    <div class="field star-rating">
+      <label for="stars">Stars</label>
+      <select formControlName="stars" id="stars">
+        <option value="1">One Star</option>
+        <option value="2">Two Stars</option>
+        <option value="3">Three Stars</option>
+        <option value="4">Four Stars</option>
+        <option value="5">Five Stars</option>
+      </select>
+    </div>
 
-    <label for="collection">Collection</label>
-    <input type="text" formControlName="collection" id="collection" />
+    <div formArrayName="openHoures">
+      <div
+        class="field"
+        *ngFor="let hourGroup of openHoursFormArray.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <label>{{ getDayName(i) }} Open Hours</label>
+        <div class="time-inputs">
+          <input type="time" formControlName="open" placeholder="Open Time" />
+          <span> - </span>
+          <input type="time" formControlName="close" placeholder="Close Time" />
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="faundationDate">Faundation Date</label>
+      <input type="date" formControlName="faundationDate" id="faundationDate" />
+    </div>
+
+    <div class="field">
+      <label for="dishes">dishes</label>
+      <input type="text" formControlName="dishes" id="dishes" />
+    </div>
+
+    <div class="field">
+      <label for="chef">Chef</label>
+      <select formControlName="chef" id="chef">
+        <option *ngFor="let chef of chefs" [value]="chef._id">
+          {{ chef.name }}
+        </option>
+      </select>
+    </div>
 
     <button>Save</button>
   </form>

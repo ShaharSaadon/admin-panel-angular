@@ -23,24 +23,16 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    // Send the form data to the server
-    this.http
-      .post('http://localhost:4000/api/v1/auth/login', this.form.value, {
-        withCredentials: true,
-      })
-      .subscribe(
-        (response: any) => {
-          console.log('Server response:', response);
-          this.userService.setUser(response.user); // Assuming the response contains user data
-
-          // Handle successful response here
-          // location.assign('/');
-        },
-        (error: any) => {
-          console.error('Server error:', error.error);
-          // Handle errors here
-        }
-      );
+    this.userService.login(this.form.value).subscribe({
+      next: (response: any) => {
+        console.log('Server response:', response);
+        this.userService.setUser(response.user);
+      },
+      error: (error: any) => {
+        console.error('Server error:', error.error);
+      },
+    });
   }
+
   ngOnInit(): void {}
 }

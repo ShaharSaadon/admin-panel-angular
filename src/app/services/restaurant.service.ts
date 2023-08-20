@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import {
-  Observable,
-  BehaviorSubject,
-  throwError,
-  from,
-  tap,
-  retry,
-  catchError,
-} from 'rxjs';
-import { Restaurant, RestaurantsFilter } from '../models/restaurant.model';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { Restaurant } from '../models/restaurant.model';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { iChef } from '../models/chef.model';
 const ENTITY = 'restaurant';
 
 @Injectable({
@@ -18,8 +12,7 @@ const ENTITY = 'restaurant';
 export class RestaurantService {
   private _restaurants$ = new BehaviorSubject<Restaurant[]>([]);
   public restaurants$ = this._restaurants$.asObservable();
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.loadRestaurants();
   }
 
@@ -32,6 +25,9 @@ export class RestaurantService {
         },
         error: (error) => {
           console.error('Server error', error.error);
+          if (error.status === 401) {
+            this.router.navigate(['/login']);
+          }
         },
       });
   }
@@ -56,9 +52,22 @@ export class RestaurantService {
     );
   }
 
-  public remove(id: string): Observable<void> {
-    return this.http.delete<void>(
-      `http://localhost:4000/api/v1/${ENTITY}/${id}`
-    );
+  public getChefs(): Observable<iChef[]> {
+    return this.http.get<iChef[]>('http://localhost:4000/api/v1/admin/chef');
+  }
+  remove(_id: string) {
+    return this.http
+      .delete(`http://localhost:4000/api/v1/${ENTITY}/${_id}`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (response) => {
+          console.log('Item deleted successfully', response);
+          this.loadRestaurants();
+        },
+        error: (error) => {
+          console.error('Error deleting item:', error);
+        },
+      });
   }
 }

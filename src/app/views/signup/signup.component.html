@@ -1,59 +1,71 @@
-<pre
-  >{{ form.value | json }}
-    </pre
->
+<div class="signup-container">
+  <div class="signup">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2 class="title">Signup</h2>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <h2>Model Registration Form</h2>
-
-  <div class="basic">
-    <input formControlName="email" class="ml-2" placeholder="Email" />
-    <input formControlName="username" placeholder="Username" />
-    <input formControlName="password" placeholder="Password" type="password" />
-    <input formControlName="fullname" placeholder="Full Name" />
-  </div>
-
-  <div formArrayName="addresses">
-    <div
-      *ngFor="
-        let address of $any(form.controls['addresses']).controls;
-        index as idx
-      "
-      [formGroupName]="idx"
-    >
-      <p>Address {{ idx + 1 }}</p>
-      <input formControlName="street" class="mb-2" placeholder="Street" />
-      <div class="flex align-center">
-        <input formControlName="city" placeholder="City" class="flex-three" />
-        <select formControlName="state" class="ml-1">
-          <option value="" disabled>Select a state</option>
-          <option value="CA">CA</option>
-          <option value="NY">NY</option>
-        </select>
+      <div class="basic">
+        <input formControlName="email" placeholder="Email" />
+        <input formControlName="username" placeholder="Username" />
         <input
-          formControlName="zip"
-          class="ml-1"
-          placeholder="zip"
-          type="number"
+          formControlName="password"
+          placeholder="Password"
+          type="password"
         />
+        <input formControlName="fullname" placeholder="Full Name" />
       </div>
-    </div>
-    <button (click)="onAddAddress()">Add Address</button>
-  </div>
 
-  <div class="newsletter">
-    <p>Would you like a newsletter?</p>
-    <label for="yes">
-      <input type="radio" id="yes" formControlName="newsletter" value="Yes" />
-      Yes
-    </label>
-    <label for="no">
-      <input type="radio" id="no" formControlName="newsletter" value="No" />
-      No
-    </label>
-  </div>
+      <div formArrayName="addresses">
+        <div
+          *ngFor="
+            let address of $any(form.controls['addresses']).controls;
+            index as idx
+          "
+          [formGroupName]="idx"
+        >
+          <p>Address {{ idx + 1 }}</p>
+          <input formControlName="street" class="mb-2" placeholder="Street" />
+          <div class="flex align-center">
+            <input
+              formControlName="city"
+              placeholder="City"
+              class="flex-three"
+            />
+            <select formControlName="state" class="ml-1">
+              <option value="" disabled>Select a state</option>
+              <option value="CA">CA</option>
+              <option value="NY">NY</option>
+            </select>
+            <input
+              formControlName="zip"
+              class="ml-1"
+              placeholder="zip"
+              type="number"
+            />
+          </div>
+        </div>
+        <button (click)="onAddAddress()">Add Address</button>
+      </div>
 
-  <button [disabled]="form.invalid" md-button color="primary" type="submit">
-    SUBMIT
-  </button>
-</form>
+      <div class="newsletter">
+        <p>Would you like a newsletter?</p>
+        <label for="yes">
+          <input
+            type="radio"
+            id="yes"
+            formControlName="newsletter"
+            value="Yes"
+          />
+          Yes
+        </label>
+        <label for="no">
+          <input type="radio" id="no" formControlName="newsletter" value="No" />
+          No
+        </label>
+      </div>
+
+      <button [disabled]="form.invalid" md-button color="primary" type="submit">
+        SUBMIT
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,17 +1,20 @@
-<pre
-  >{{ form.value | json }}
-    </pre
->
+<div class="login-container">
+  <div class="login">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2>Login</h2>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <h2>Model Login Form</h2>
+      <div class="basic">
+        <input formControlName="email" class="ml-2" placeholder="Email" />
+        <input
+          formControlName="password"
+          placeholder="Password"
+          type="password"
+        />
+      </div>
 
-  <div class="basic">
-    <input formControlName="email" class="ml-2" placeholder="Email" />
-    <input formControlName="password" placeholder="Password" type="password" />
+      <button [disabled]="form.invalid" md-button color="primary" type="submit">
+        SUBMIT
+      </button>
+    </form>
   </div>
-
-  <button [disabled]="form.invalid" md-button color="primary" type="submit">
-    SUBMIT
-  </button>
-</form>
+</div>
