@@ -2,6 +2,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 48px;
+  padding: 20px;
 
   .field {
     height: 60px;
@@ -14,6 +15,10 @@ form {
 .time-inputs {
   display: flex;
   align-items: center;
+}
+
+.time {
+  width: 150px;
 }
 
 .time-inputs input {
@@ -30,7 +35,7 @@ form {
   color: gold !important;
 }
 .restaurant-edit {
-  width: 80%;
+  width: 40vw;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;

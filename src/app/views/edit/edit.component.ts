@@ -8,6 +8,8 @@ import { LoaderService } from 'src/app/services/loader.service';
 import { startWithNumber } from '../../validators/startWithNumber';
 import { Dish } from 'src/app/models/dish.model';
 import { iChef } from 'src/app/models/chef.model';
+import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'restaurant-edit',
   templateUrl: './edit.component.html',
@@ -18,12 +20,15 @@ export class RestaurantEditComponent implements OnInit {
   restaurant: Restaurant | null = null;
   subscription!: Subscription;
   chefs: iChef[] = [];
+  selectedDishes: string[] = [];
 
   constructor(
     private restaurantService: RestaurantService,
     private router: Router,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private http: HttpClient,
+
     private loaderService: LoaderService
   ) {
     this.form = this.fb.group({
@@ -31,37 +36,58 @@ export class RestaurantEditComponent implements OnInit {
       stars: '',
       openHoures: this.fb.array([]),
       faundationDate: '',
-      dishes: [],
+      dishes: [this.selectedDishes],
       chef: {},
     });
   }
   ngOnInit(): void {
-    this.loaderService.setIsLoading(false);
+    this.loaderService.setIsLoading(true);
     const restaurantId = this.route.snapshot.paramMap.get('id');
     if (restaurantId) {
       this.restaurantService.getById(restaurantId).subscribe((restaurant) => {
         this.restaurant = restaurant;
+        console.log(restaurant);
         this.form.patchValue(this.restaurant);
 
-        // Initialize the open hours form array
-        this.restaurant.openHoures.forEach((hour: string) => {
+        this.restaurant?.openHoures?.forEach((hour: string) => {
+          console.log('Initializing hour:', hour); // Debug line
           const [openTime, closeTime] = hour.split('-');
-          this.openHoursFormArray.push(
+          this.openHouresFormArray.push(
             this.fb.group({
               open: [openTime, Validators.required],
               close: [closeTime, Validators.required],
             })
           );
         });
-        this.form.patchValue({ openHoures: this.restaurant.openHoures });
+
+        if (this.restaurant?.dishes) {
+          this.selectedDishes = this.restaurant.dishes.map((dish) => dish._id);
+          this.form.patchValue({ dishes: this.selectedDishes });
+        }
+
+        if (this.restaurant?.chefId) {
+          this.form.patchValue({ chef: this.restaurant.chefId });
+        }
       });
     }
-    this.restaurantService.getChefs().subscribe((chefs) => {
-      this.chefs = chefs;
-    });
+    this.getchefs();
   }
-  get openHoursFormArray(): FormArray {
+
+  get openHouresFormArray(): FormArray {
     return this.form.get('openHoures') as FormArray;
+  }
+  onDishSelect(dishId: string, event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.selectedDishes.push(dishId);
+    } else {
+      const index = this.selectedDishes.indexOf(dishId);
+      if (index > -1) {
+        this.selectedDishes.splice(index, 1);
+      }
+    }
+    this.form.controls['dishes'].setValue(this.selectedDishes);
   }
   onSaveRestaurant() {
     const formValue = this.form.value;
@@ -69,10 +95,20 @@ export class RestaurantEditComponent implements OnInit {
       (hour: any) => `${hour.open}-${hour.close}`
     );
     const restaurant = { ...this.restaurant, ...formValue } as Restaurant;
-    this.restaurantService.update(restaurant).subscribe({
-      next: () => this.router.navigateByUrl('/'),
-      error: (err) => console.log('err:', err),
-    });
+    if (this.restaurant && this.restaurant._id) {
+      // Check for ID to determine whether to update or create
+      // Update existing restaurant
+      this.restaurantService.update(restaurant).subscribe({
+        next: () => this.router.navigateByUrl('/'),
+        error: (err) => console.log('err:', err),
+      });
+    } else {
+      // Create new restaurant
+      this.restaurantService.add(restaurant).subscribe({
+        next: () => this.router.navigateByUrl('/'),
+        error: (err) => console.log('err:', err),
+      });
+    }
   }
   getDayName(index: number): string {
     const days = [
@@ -108,6 +144,20 @@ export class RestaurantEditComponent implements OnInit {
         starString = 'no stars';
     }
     this.form.controls['stars'].setValue(starString);
+  }
+  getchefs() {
+    this.http
+      .get(`http://localhost:4000/api/v1/admin/chef`, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.chefs = response.data;
+        },
+        error: (error: any) => {
+          console.error('Server error', error.error);
+        },
+      });
   }
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();

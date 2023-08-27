@@ -18,7 +18,9 @@ export class RestaurantService {
 
   private loadRestaurants() {
     this.http
-      .get<Restaurant[]>(`http://localhost:4000/api/v1/admin/${ENTITY}`)
+      .get<Restaurant[]>(`http://localhost:4000/api/v1/admin/restaurant`, {
+        withCredentials: true,
+      })
       .subscribe({
         next: (restaurants) => {
           this._restaurants$.next(restaurants);
@@ -40,7 +42,7 @@ export class RestaurantService {
 
   public add(restaurant: Restaurant): Observable<Restaurant> {
     return this.http.post<Restaurant>(
-      `http://localhost:4000/api/v1/${ENTITY}`,
+      `http://localhost:4000/api/v1/restaurant`,
       restaurant
     );
   }
@@ -52,9 +54,6 @@ export class RestaurantService {
     );
   }
 
-  public getChefs(): Observable<iChef[]> {
-    return this.http.get<iChef[]>('http://localhost:4000/api/v1/admin/chef');
-  }
   remove(_id: string) {
     return this.http
       .delete(`http://localhost:4000/api/v1/${ENTITY}/${_id}`, {

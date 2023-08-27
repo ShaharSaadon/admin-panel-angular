@@ -13,8 +13,8 @@
         >
       </p>
     </ng-container>
+    <label for="stars">Stars</label>
     <div class="field star-rating">
-      <label for="stars">Stars</label>
       <select formControlName="stars" id="stars">
         <option value="1">One Star</option>
         <option value="2">Two Stars</option>
@@ -27,7 +27,7 @@
     <div formArrayName="openHoures">
       <div
         class="field"
-        *ngFor="let hourGroup of openHoursFormArray.controls; let i = index"
+        *ngFor="let hourGroup of openHouresFormArray.controls; let i = index"
         [formGroupName]="i"
       >
         <label>{{ getDayName(i) }} Open Hours</label>
@@ -38,14 +38,19 @@
         </div>
       </div>
     </div>
+
     <div class="field">
       <label for="faundationDate">Faundation Date</label>
       <input type="date" formControlName="faundationDate" id="faundationDate" />
     </div>
 
     <div class="field">
-      <label for="dishes">dishes</label>
-      <input type="text" formControlName="dishes" id="dishes" />
+      <label for="dishes">Dishes</label>
+      <mat-select formControlName="dishes" multiple>
+        <mat-option *ngFor="let dish of restaurant?.dishes" [value]="dish._id">
+          {{ dish.name }}
+        </mat-option>
+      </mat-select>
     </div>
 
     <div class="field">
@@ -56,6 +61,8 @@
         </option>
       </select>
     </div>
+
+    {{ restaurant | json }}
 
     <button>Save</button>
   </form>

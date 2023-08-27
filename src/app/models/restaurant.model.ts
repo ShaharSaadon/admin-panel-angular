@@ -1,13 +1,16 @@
+import { iChef } from './chef.model';
 import { Dish } from './dish.model';
+import { ObjectId } from 'mongodb';
+
 export interface Restaurant {
   _id: string;
   type: 'restaurant';
   name: string;
-  chef?: string;
+  chefId: ObjectId;
   stars: number;
   openHoures: string[];
   dishes?: Dish[];
-  faundationDate: Date;
+  foundationDate: Date;
 }
 
 export interface RestaurantsFilter {

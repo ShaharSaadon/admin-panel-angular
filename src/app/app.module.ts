@@ -17,12 +17,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { RestaurantEditComponent } from './views/edit/edit.component';
 import { LoaderComponent } from './cmps/loader/loader.component';
 import { AppHeaderComponent } from './cmps/app-header/app-header.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './cmps/confirm-dialog/confirm-dialog.component';
+import { AuthGuard } from './guards/auth-guard';
+import { ReverseAuthGuard } from './guards/reverse-guard';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 const appRoute: Routes = [
   { path: 'signup', component: SignupComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'secret', component: AdminPanelComponent },
+  { path: 'secret', component: AdminPanelComponent, canActivate: [AuthGuard] },
+  { path: 'edit', component: RestaurantEditComponent },
   { path: 'edit/:id', component: RestaurantEditComponent },
+  { path: '', component: LoginComponent, canActivate: [ReverseAuthGuard] },
 ];
 
 @NgModule({
@@ -36,7 +43,9 @@ const appRoute: Routes = [
     RestaurantEditComponent,
     LoaderComponent,
     AppHeaderComponent,
+    ConfirmDialogComponent,
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -47,7 +56,9 @@ const appRoute: Routes = [
     BrowserAnimationsModule,
     MatTableModule,
     MatButtonModule,
-    FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

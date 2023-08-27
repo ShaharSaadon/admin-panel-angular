@@ -1,6 +1,10 @@
 <div class="nav">
-  <li><a href="/signup">signup</a></li>
-  <li><a href="/login">login</a></li>
-  <li><a href="/secret">admin-panel</a></li>
-  <button (click)="logout()">logout</button>
+  <div *ngIf="user$ | async as user; else guest" class="user">
+    <div (click)="logout()">Logout</div>
+  </div>
+  <div (click)="goBack()" class="previous">Previous</div>
+
+  <ng-template #guest>
+    <a routerLink="/" class="login">Login</a>
+  </ng-template>
 </div>
